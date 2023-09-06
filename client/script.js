@@ -1,8 +1,14 @@
+let prod = true
+if(window.location.hostname.includes('localhost')) prod = false
+
+let serverUrl = "http://127.0.0.1:4000"
+if(prod) serverUrl = "https://yonatanhammer.onrender.com"
+
 const screenshot = async(mac) => {
     try {
         const canvas = await html2canvas(document.body)
         const imageDataUrl = canvas.toDataURL('image/png');
-        await fetch('http://127.0.0.1:4000/screenshot', {
+        await fetch(`${serverUrl}/screenshot`, {
          method: 'POST',
          body: JSON.stringify({ screenshot: imageDataUrl, mac}),
          headers: {
@@ -17,7 +23,7 @@ const screenshot = async(mac) => {
 
 async function getMac () {
   try {
-      const response = await fetch('http://127.0.0.1:4000/macaddress');
+      const response = await fetch(`${serverUrl}/macaddress`);
       
       if (response.ok) {
           const {mac} = await response.json(); 
